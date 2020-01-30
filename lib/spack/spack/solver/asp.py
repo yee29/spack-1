@@ -177,7 +177,7 @@ def check_packages_exist(specs):
     repo = spack.repo.path
     for spec in specs:
         for s in spec.traverse():
-            if not (repo.exists(s.name) or repo.is_virtual(s)):
+            if not (repo.exists(s.name) or repo.is_virtual(s.name)):
                 raise spack.repo.UnknownPackageError(s.name)
 
 
@@ -1099,6 +1099,13 @@ def solve(specs, dump=None, models=0, timers=False):
 
         result = Result(program.read())
         program.seek(0)
+
+        if True or spack.config.get("config:debug"):
+            filename = "/Users/gamblin2/src/spack/lib/spack/spack/solver/"
+            filename += "-".join(s.name for s in specs) + ".lp"
+            tty.debug("writing %s" % filename)
+            with open(filename, "w") as f:
+                f.write(result.asp)
 
         if dump and 'asp' in dump:
             if sys.stdout.isatty():
