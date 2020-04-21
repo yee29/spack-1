@@ -313,17 +313,18 @@ class AspGenerator(object):
         self.h2("Available compilers")
         compilers = self.possible_compilers
 
+        print(compilers, [dir(c) for c in compilers])
+
         compiler_versions = collections.defaultdict(lambda: set())
         for compiler in compilers:
             compiler_versions[compiler.name].add(compiler.version)
 
         for compiler in sorted(compiler_versions):
             self.fact(fn.compiler(compiler))
-            self.rule(
-                self._or(
-                    fn.compiler_version(compiler, v)
-                    for v in sorted(compiler_versions[compiler])),
-                fn.compiler(compiler))
+            for v in sorted(compiler_versions[compiler]):
+                self.fact(fn.compiler_version(compiler, v))
+
+            self.out.write("\n")
 
     def compiler_defaults(self):
         """Set compiler defaults, given a list of possible compilers."""

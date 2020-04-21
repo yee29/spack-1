@@ -888,6 +888,12 @@ class TestSpecSematics(object):
         spec_str = 'libelf %gcc@4.7.2 os=redhat6'
         for _ in range(25):
             s = Spec(spec_str).concretized()
+
+            print(s.tree(color=True))
+            print(s.compiler_flags['cflags'])
+            print(s.compiler_flags['cxxflags'])
+            print(s.compiler_flags['fflags'])
+
             assert all(
                 s.compiler_flags[x] == ['-O0', '-g']
                 for x in ('cflags', 'cxxflags', 'fflags')
@@ -945,8 +951,8 @@ class TestSpecSematics(object):
         with pytest.raises(SpecError):
             spec.prefix
 
-    def test_forwarding_of_architecture_attributes(self):
-        spec = Spec('libelf').concretized()
+    def test_forwarding_of_architecture_attributes(self, mock_targets):
+        spec = Spec('libelf target=x86_64').concretized()
 
         # Check that we can still access each member through
         # the architecture attribute
