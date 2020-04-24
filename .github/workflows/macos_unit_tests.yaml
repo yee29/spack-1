@@ -25,7 +25,7 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install Python packages
-        run: |
+      run: |
           pip install --upgrade pip
           pip install --upgrade six
           pip install --upgrade coverage
