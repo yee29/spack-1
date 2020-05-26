@@ -304,6 +304,13 @@ _pretty_print() {
 
 complete -o bashdefault -o default -F _bash_completion_spack spack
 
+# Completion for spacktivate
+complete -o bashdefault -o default -F _bash_completion_spack spacktivate
+
+_spacktivate() {
+  _spack_env_activate
+}
+
 # Spack commands
 #
 # Everything below here is auto-generated.
@@ -462,20 +469,12 @@ _spack_ci() {
     then
         SPACK_COMPREPLY="-h --help"
     else
-        SPACK_COMPREPLY="start generate pushyaml rebuild"
+        SPACK_COMPREPLY="generate rebuild"
     fi
-}
-
-_spack_ci_start() {
-    SPACK_COMPREPLY="-h --help --output-file --copy-to --spack-repo --spack-ref --downstream-repo --branch-name --commit-sha"
 }
 
 _spack_ci_generate() {
     SPACK_COMPREPLY="-h --help --output-file --copy-to --spack-repo --spack-ref"
-}
-
-_spack_ci_pushyaml() {
-    SPACK_COMPREPLY="-h --help --downstream-repo --branch-name --commit-sha"
 }
 
 _spack_ci_rebuild() {
